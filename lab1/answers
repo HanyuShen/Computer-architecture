@@ -29,14 +29,15 @@ times
 
 Only 2 registers (other than the PC register) change value:
 
-Q7) register (?) counts down from (00000003) to (00000000)
+Q7) register (R2) counts down from (00000002) to (00000000)
 
-Q8) the final value of register (R0) is the (add) (hint: arithmetic operation) of memory locations (00000014) and (00000018)
+Q8) the final value of register (R0) is the (addition) (hint: arithmetic operation) of memory locations (00000008) and (00000004)
 
 
 Part 2
 
-Q9) The memory location for "tom" (00000024:00000028) because (the "tom" is stored at the 10th location) 
+Q9) The memory location for "tom" (go back to where it was at first) because (we store register R0 to tom) 
 
 Q10) If you reset and run the program again without reloading it then what
-happens to the value of "tom" and why: (change from 0000000C to 000000018;the value of R0 will remain;)
+happens to the value of "tom" and why: (change from 0000000C to 000000018;because without reloading,the value of R0 
+will remain as 0000000C before running the program;)

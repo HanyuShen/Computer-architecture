@@ -40,4 +40,4 @@ Q9) The memory location for "tom" (is 00000024) because (tom is stored in R0 in 
 
 Q10) If you reset and run the program again without reloading it then what
 happens to the value of "tom" and why: (change from 0000000C to 000000018;because without reloading,the value of R0 
-will remain as 0000000C before running the program;)
+will remain as 0000000C before running the program;). 

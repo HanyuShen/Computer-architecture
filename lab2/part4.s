@@ -1,6 +1,6 @@
 ; Age History
 
-	B  main
+	B  main 
 
 born	DEFB "you were born in \0"
 were	DEFB "you were \0"

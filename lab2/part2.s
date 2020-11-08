@@ -17,7 +17,7 @@ next				; while (true) { //The { is just to ease readability, python does not us
 	ADR	R0, goodbye 	;   printf(" and good-bye!")
 	SVC	3
 	SVC  	2		;   stop the program
-
+   
 finish	; done // translate to ARM code
 
 	SVC	0		; output the character in R0

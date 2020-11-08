@@ -19,6 +19,6 @@ loop    LDR R0, [R0]    ;while R0 != 10 {// translate to ARM code
          BNE loop     ; }// translate to ARM code
 
 	ADR	R0, goodbye 	; printf("and good-bye!")
-	SVC	3
+	SVC	3  
 
 	SVC  	2		; stop the program

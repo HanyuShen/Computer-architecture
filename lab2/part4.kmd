@@ -81,7 +81,7 @@ KMD
 000000DC:             ;     
 000000DC: EF000002    ;         SVC 2 ; stop
 000000E0:             ; 
-
+ 
 Symbol Table: Labels
 : born                              00000004  Local -- ARM
 : were                              00000016  Local -- ARM

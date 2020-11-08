@@ -13,7 +13,7 @@ loop    LDR R0, [R0]    ;while R0 != 10 {// translate to ARM code
 
 
          SVC	1		; input a character to R0
-	     SVC	0		; output the character in R0
+	     SVC	0		; out put the character in R0
 
 	     CMP R0, #10
          BNE loop     ; }// translate to ARM code
@@ -21,4 +21,4 @@ loop    LDR R0, [R0]    ;while R0 != 10 {// translate to ARM code
 	ADR	R0, goodbye 	; printf("and good-bye!")
 	SVC	3   
 
-	SVC   	2		; stop the program
+	SVC    	2		; stop the program

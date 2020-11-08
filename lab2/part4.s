@@ -28,7 +28,7 @@ main
      STR R1,year
      B start
         
-
+  
 start    ; while year != present //{ Change this code  
 	; this code does print "you were " + str(age) + " in " + str(year) // DO NOT change the instructions below (except for part 5)
 	ADR R0, were

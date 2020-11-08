@@ -13,7 +13,7 @@ present DEFW 2020	; present = 2005// Change this code
 birth   DEFW 2001	; birth = 1959   // Change this code
 year    DEFW 0	; year = 0       // Change this code
 age     DEFW 1	; age = 1        // Change this code
-      
+        
 main  
 	; this code does print "you were born in " + str(birth) // DO NOT change the instructions below (except for part 5)
 	ADR R0, born

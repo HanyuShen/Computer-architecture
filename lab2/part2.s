@@ -21,4 +21,4 @@ next				; while (true) { //The { is just to ease readability, python does not us
 finish	; done // translate to ARM code
 
 	SVC	0		; output the character in R0
-	B	next		; } //while
+	B	next		; } //while  

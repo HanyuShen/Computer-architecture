@@ -1,7 +1,6 @@
-	B part1 ; part1 or part2 or part3
+	B part3; part1 or part2 or part3
 
 buffer	DEFS 100,0
-
 s1	DEFB "one\0"
 	ALIGN
 s2	DEFB "two\0"
@@ -21,27 +20,54 @@ s8	DEFB "twentytwo\0"
 s9	DEFB "twenty\0"
 	ALIGN
 
+
 ;************************** part 1 **************************
 printstring
-	MOV  R0,R1	; given
-	SVC  3		; given
+      LDR R0,[R1]       ; given
+      B start
+loop   SVC 0
+start  LDRB R0,[R1],#1
+       CMP R0,#0
+       BNE loop        	; given
 ; your code goes here, replacing the previous 2 lines
 	MOV  R0, #10	; given - output end-of-line
-	SVC  0		; given
+	SVC  0       ; given
 	MOV  PC, LR	; given
 
 ;************************** part 2 ***************************
-strcat
-; your code goes here
+strcat 
+loop2 
+      LDRB R0,[R1],#1
+      CMP R0,#0
+      BNE loop2
+      SUB R1,R1,#1
+      B strcpy
+                  ; your code goes here
 	MOV  PC, LR
+    
 
 strcpy
-; your code goes here
+      LDRB R0,[R2],#1
+      STRB R0,[R1],#1
+      CMP R0,#0
+      BNE strcpy
+        ; your code goes here
 	MOV  PC, LR
 
 ;************************** part 3 **************************
 sorted	STR LR, return2	; given
-; your code goes here
+branch  LDRB R4,[R2],#1
+        LDRB R5,[R3],#1
+        CMP R4,#0
+        BEQ exit
+        CMP R5,#0 
+        BEQ exit
+        CMP R4,R5
+        BNE exit
+        B branch
+     exit
+        CMP R4,R5
+            ; your code goes here
 	LDR  PC, return2 ; given
 return2 DEFW 0		; given
 

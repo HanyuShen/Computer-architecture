@@ -216,4 +216,4 @@ main
 
 
 whoops1		DEFB	"\n** BUT YOU CORRUPTED REGISTERS!  **\n", 0
-whoops2		DEFB	"\n** BUT YOUR STACK DIDN'T BALANCE!  **\n", 0
+whoops2		DEFB	"\n** BUT YOUR STACK DIDN'T BALANCE!  **\n", 0        

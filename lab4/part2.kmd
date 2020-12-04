@@ -13,7 +13,7 @@ KMD
 00000004: EA000090    ;                 B       main
 00000008:             ; 
 00000008:             ;                 DEFS    100             ; this chunk of memory is for the stack
-0000006C:             ; _stack                                  ; This label is 'just after' the stack space
+0000006C:             ; _stack                                  ; This label is 'just after' the stack space    
 0000006C:             ; 
 0000006C:             ; 
 0000006C: 54 68 69 73 ; wasborn         DEFB    "This person was born on ",0

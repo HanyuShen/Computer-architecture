@@ -21,7 +21,7 @@ on		DEFB	" on ",0
 is		DEFB	"This person is ",0
 today		DEFB	" today!",0
 willbe		DEFB	"This person will be ",0
-		ALIGN
+		ALIGN    
 
 pDay		  DEFW	28		;  pDay = 23    //or whatever is today's date
 pMonth		DEFW	11		;  pMonth = 11  //or whatever is this month

@@ -175,7 +175,7 @@ print_date
 		MOV	R0, #cLF
 		SVC	print_char
 		MOV	PC, LR
-
+    
 
 another		DEFB	"Another person",10,0
 		ALIGN

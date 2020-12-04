@@ -59,47 +59,49 @@ printAgeHistory	STMFD SP!,{R6}			; callee saves three registers
 ; print("This person was born on " + str(bDay) + "/" + str(bMonth) + "/" + str(bYear))
 		ADRL	R0, wasborn
 		SVC	print_str
-		MOV	R0, R6
-		SVC	print_no
-		MOV	R0, #'/'
-		SVC	print_char
-		MOV	R0, R1
-		SVC	print_no
-		MOV	R0, #'/'
-		SVC	print_char
-		MOV	R0, R2
-		SVC	print_no
-		MOV	R0, #cLF
-		SVC	print_char
+		STMFD SP!,{LR}
+        BL print_date_wasborn
+        LDMFD SP!,{LR}
 
 ; this code does: while year < pYear //{
 loop1	LDR	R0, pYear
-		CMP	R4, R0
-		BHS	end1		; Years are unsigned
+		CMP	R4, R0	; Years are unsigned
 ; for part 4, should be changed to:
 ; while year < pYear or
 ;				(year == pYear and bMonth < pMonth) or
-;				(year == pYear and bMonth == pMonth and bDay < pDay):
+;				(year == pYear and bMonth == pMonth and bDay < pDay)
+
+
+        BEQ B1
+        BGT else1
+        BLT B3
+
+B1      LDR R0,pMonth
+        CMP R1,R0
+        BEQ B2
+        BGT else1
+        BLT B3
+
+B2      LDR R0,pDay
+        CMP R6,R0
+        BEQ end1
+        BGT end1
+        BLT B3
 
 ;  print("This person was " + str(age) + " on " + str(bDay) + "/" + str(bMonth) + "/" + str(year))
+B3
 		ADRL	R0, was
 		SVC	print_str
 		MOV	R0, R5
 		SVC	print_no
 		ADRL	R0, on
 		SVC	print_str
-		MOV	R0, R6
-		SVC	print_no
-		MOV	R0, #'/'
-		SVC	print_char
-		MOV	R0, R1
-		SVC	print_no
-		MOV	R0, #'/'
-		SVC	print_char
-		MOV	R0, R4
-		SVC	print_no
-		MOV	R0, #cLF
-		SVC	print_char
+
+		STMFD SP!,{LR}
+        BL print_date
+        LDMFD SP!,{LR}
+
+        
 
 		; year = year + 1
 		ADD	R4, R4, #1
@@ -112,9 +114,9 @@ end1
 ; this code does: if (bMonth == pMonth):
 ; for part 4, should be changed to:
 ; if (bMonth == pMonth and bDay == pDay):
-		LDR	R0, pMonth
-		CMP	R1, R0
-		BNE	else1
+		LDR	R0, pDay
+		CMP	R6,R0
+		BGT	else1
 
 ; print("This person is " + str(age) + " today!")
 		ADRL	R0, is
@@ -136,6 +138,40 @@ else1
 		SVC	print_no
 		ADRL	R0, on
 		SVC	print_str
+		
+        STMFD SP!,{LR}
+        BL print_date
+        LDMFD SP!,{LR}
+	
+
+; }// end of printAgeHistory
+end2	LDMFD SP!,{R2}
+        LDMFD SP!,{R1}
+	    LDMFD SP!,{R0}
+        LDMFD SP!,{R4}		; callee saved registers
+		LDMFD SP!,{R5}
+		LDMFD SP!,{R6}
+
+		MOV	PC, LR
+
+print_date_wasborn	
+		
+		MOV	R0, R6
+		SVC	print_no
+		MOV	R0, #'/'
+		SVC	print_char
+		MOV	R0, R1
+		SVC	print_no
+		MOV	R0, #'/'
+		SVC	print_char
+		MOV	R0, R2
+		SVC	print_no
+		MOV	R0, #cLF
+		SVC	print_char
+		MOV	PC, LR
+
+print_date	
+		
 		MOV	R0, R6
 		SVC	print_no
 		MOV	R0, #'/'
@@ -148,16 +184,8 @@ else1
 		SVC	print_no
 		MOV	R0, #cLF
 		SVC	print_char
-
-; }// end of printAgeHistory
-end2	LDMFD SP!,{R2}
-        LDMFD SP!,{R1}
-	    LDMFD SP!,{R0}
-        LDMFD SP!,{R4}		; callee saved registers
-		LDMFD SP!,{R5}
-		LDMFD SP!,{R6}
-
 		MOV	PC, LR
+
 
 another		DEFB	"Another person",10,0
 		ALIGN
@@ -171,13 +199,13 @@ main
 ; printAgeHistory(pDay, pMonth, 2000)
 		LDR	R0, pDay
 		STMFD SP!,{R0}			; Stack first parameter
-		LDR	R0, pMonth
-		STMFD SP!,{R0}			; Stack second parameter
-		MOV	R0, #2000
-		STMFD SP!,{R0}			; Stack third parameter
+		LDR	R1, pMonth
+		STMFD SP!,{R1}			; Stack second parameter
+		MOV	R2, #2000
+		STMFD SP!,{R2}			; Stack third parameter
 		BL	printAgeHistory
-		LDMFD SP!,{R0}			; Deallocate three 32-bit variables
-		LDMFD SP!,{R0}
+		LDMFD SP!,{R2}			; Deallocate three 32-bit variables
+		LDMFD SP!,{R1}
 		LDMFD SP!,{R0}
 
 ; print("Another person");
@@ -187,13 +215,13 @@ main
 ; printAgeHistory(13, 11, 2000)
 		MOV	R0, #13
 		STMFD SP!,{R0}			; Stack first parameter
-		MOV	R0, #11
-		STR	R0, [SP, #-4]!		; An explicit coding of PUSH
-		MOV	R0, #2000
-		STMFD	SP!, {R0}		; The STore Multiple mnemonic for PUSH {R0}
+		MOV	R1, #11
+		STR	R1, [SP, #-4]!		; An explicit coding of PUSH
+		MOV	R2, #2000
+		STMFD	SP!, {R2}		; The STore Multiple mnemonic for PUSH {R0}
 		BL	printAgeHistory
-		LDMFD SP!,{R0}			; Deallocate three 32-bit variables
-		LDMFD SP!,{R0}
+		LDMFD SP!,{R2}			; Deallocate three 32-bit variables
+		LDMFD SP!,{R1}
 		LDMFD SP!,{R0}
 
 	; Now check to see if register values intact (Not part of Java)

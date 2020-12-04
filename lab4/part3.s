@@ -23,9 +23,9 @@ today		DEFB	" today!",0
 willbe		DEFB	"This person will be ",0
 		ALIGN
 
-pDay		  DEFW	23		;  pDay = 23    //or whatever is today's date
+pDay		  DEFW	28		;  pDay = 23    //or whatever is today's date
 pMonth		DEFW	11		;  pMonth = 11  //or whatever is this month
-pYear		  DEFW	2005	;  pYear = 2005 //or whatever is this year
+pYear		  DEFW	2020	;  pYear = 2005 //or whatever is this year
 
 
 ; def printAgeHistory (bDay, bMonth, bYear)
@@ -59,18 +59,9 @@ printAgeHistory	STMFD SP!,{R6}			; callee saves three registers
 ; print("This person was born on " + str(bDay) + "/" + str(bMonth) + "/" + str(bYear))
 		ADRL	R0, wasborn
 		SVC	print_str
-		MOV	R0, R6
-		SVC	print_no
-		MOV	R0, #'/'
-		SVC	print_char
-		MOV	R0, R1
-		SVC	print_no
-		MOV	R0, #'/'
-		SVC	print_char
-		MOV	R0, R2
-		SVC	print_no
-		MOV	R0, #cLF
-		SVC	print_char
+		STMFD SP!,{LR}
+        BL print_date_wasborn
+        LDMFD SP!,{LR}
 
 ; this code does: while year < pYear //{
 loop1	LDR	R0, pYear
@@ -88,18 +79,12 @@ loop1	LDR	R0, pYear
 		SVC	print_no
 		ADRL	R0, on
 		SVC	print_str
-		MOV	R0, R6
-		SVC	print_no
-		MOV	R0, #'/'
-		SVC	print_char
-		MOV	R0, R1
-		SVC	print_no
-		MOV	R0, #'/'
-		SVC	print_char
-		MOV	R0, R4
-		SVC	print_no
-		MOV	R0, #cLF
-		SVC	print_char
+
+		STMFD SP!,{LR}
+        BL print_date
+        LDMFD SP!,{LR}
+
+        
 
 		; year = year + 1
 		ADD	R4, R4, #1
@@ -159,6 +144,39 @@ end2	LDMFD SP!,{R2}
 
 		MOV	PC, LR
 
+print_date_wasborn	
+		
+		MOV	R0, R6
+		SVC	print_no
+		MOV	R0, #'/'
+		SVC	print_char
+		MOV	R0, R1
+		SVC	print_no
+		MOV	R0, #'/'
+		SVC	print_char
+		MOV	R0, R2
+		SVC	print_no
+		MOV	R0, #cLF
+		SVC	print_char
+		MOV	PC, LR
+
+print_date	
+		
+		MOV	R0, R6
+		SVC	print_no
+		MOV	R0, #'/'
+		SVC	print_char
+		MOV	R0, R1
+		SVC	print_no
+		MOV	R0, #'/'
+		SVC	print_char
+		MOV	R0, R4
+		SVC	print_no
+		MOV	R0, #cLF
+		SVC	print_char
+		MOV	PC, LR
+
+
 another		DEFB	"Another person",10,0
 		ALIGN
 
@@ -171,13 +189,13 @@ main
 ; printAgeHistory(pDay, pMonth, 2000)
 		LDR	R0, pDay
 		STMFD SP!,{R0}			; Stack first parameter
-		LDR	R0, pMonth
-		STMFD SP!,{R0}			; Stack second parameter
-		MOV	R0, #2000
-		STMFD SP!,{R0}			; Stack third parameter
+		LDR	R1, pMonth
+		STMFD SP!,{R1}			; Stack second parameter
+		MOV	R2, #2000
+		STMFD SP!,{R2}			; Stack third parameter
 		BL	printAgeHistory
-		LDMFD SP!,{R0}			; Deallocate three 32-bit variables
-		LDMFD SP!,{R0}
+		LDMFD SP!,{R2}			; Deallocate three 32-bit variables
+		LDMFD SP!,{R1}
 		LDMFD SP!,{R0}
 
 ; print("Another person");
@@ -187,13 +205,13 @@ main
 ; printAgeHistory(13, 11, 2000)
 		MOV	R0, #13
 		STMFD SP!,{R0}			; Stack first parameter
-		MOV	R0, #11
-		STR	R0, [SP, #-4]!		; An explicit coding of PUSH
-		MOV	R0, #2000
-		STMFD	SP!, {R0}		; The STore Multiple mnemonic for PUSH {R0}
+		MOV	R1, #11
+		STR	R1, [SP, #-4]!		; An explicit coding of PUSH
+		MOV	R2, #2000
+		STMFD	SP!, {R2}		; The STore Multiple mnemonic for PUSH {R0}
 		BL	printAgeHistory
-		LDMFD SP!,{R0}			; Deallocate three 32-bit variables
-		LDMFD SP!,{R0}
+		LDMFD SP!,{R2}			; Deallocate three 32-bit variables
+		LDMFD SP!,{R1}
 		LDMFD SP!,{R0}
 
 	; Now check to see if register values intact (Not part of Java)
